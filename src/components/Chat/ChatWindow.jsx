@@ -84,12 +84,6 @@ const ChatWindow = ({ chatPartner, messages, currentUser, newMessage, setNewMess
           onSubmit={handleSendMessage}
           className="flex items-center space-x-2"
         >
-          <button type="button" className="p-2 text-gray-400 hover:text-white">
-            <Smile className="h-6 w-6" />
-          </button>
-          <button type="button" className="p-2 text-gray-400 hover:text-white">
-            <Paperclip className="h-6 w-6" />
-          </button>
           <input
             type="text"
             value={newMessage}
