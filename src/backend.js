@@ -1,1 +1,1 @@
-export const BACKEND_URL = 'https://skripsibackend-production-c1f0.up.railway.app';
+export const BACKEND_URL = 'https://skripsibackendv2-production.up.railway.app/';
