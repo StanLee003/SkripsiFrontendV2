@@ -208,6 +208,7 @@ const ChatPage = ({ currentUser, onLogout, onProfileUpdate, navigateToAdmin }) =
           currentUser={currentUser}
           closeModal={() => setEditProfileModalOpen(false)}
           onProfileUpdate={onProfileUpdate}
+          language={userLang}
         />
       )}
     </>

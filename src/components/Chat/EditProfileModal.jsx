@@ -6,6 +6,39 @@ import languages from '../../utils/languages';
 import { BACKEND_URL } from '../../backend';
 import { axiosWithAuth } from '../../utils/axiosWithAuth';
 
+const translations = {
+  en: {
+    editProfile: 'Edit Profile',
+    displayName: 'Display Name',
+    language: 'Language Preference',
+    cancel: 'Cancel',
+    save: 'Save',
+    profileUpdated: 'Profile updated successfully!',
+    updating: 'Saving...',
+    choosePhoto: 'Choose Photo',
+  },
+  id: {
+    editProfile: 'Edit Profil',
+    displayName: 'Nama Tampilan',
+    language: 'Bahasa Pilihan',
+    cancel: 'Batal',
+    save: 'Simpan',
+    profileUpdated: 'Profil berhasil diperbarui!',
+    updating: 'Menyimpan...',
+    choosePhoto: 'Pilih Foto',
+  },
+  zh: {
+    editProfile: '编辑资料',
+    displayName: '显示名称',
+    language: '语言偏好',
+    cancel: '取消',
+    save: '保存',
+    profileUpdated: '资料更新成功！',
+    updating: '保存中...',
+    choosePhoto: '选择照片',
+  },
+};
+
 const EditProfileModal = ({ currentUser, closeModal, onProfileUpdate }) => {
   const [displayName, setDisplayName] = useState(
     currentUser.profile?.displayName || currentUser.displayName || ''
@@ -20,7 +53,8 @@ const EditProfileModal = ({ currentUser, closeModal, onProfileUpdate }) => {
   const [success, setSuccess] = useState(false);
   const fileInputRef = useRef(null);
 
-  // Reset pesan ketika modal dibuka atau user berubah
+  const t = translations[languagePreference] || translations.en;
+
   useEffect(() => {
     setError('');
     setSuccess(false);
@@ -31,7 +65,6 @@ const EditProfileModal = ({ currentUser, closeModal, onProfileUpdate }) => {
   }, [currentUser, closeModal]);
 
   useEffect(() => {
-    // Cleanup agar tidak memory leak saat ganti file berkali-kali
     return () => {
       if (preview && preview.startsWith('blob:')) {
         URL.revokeObjectURL(preview);
@@ -55,7 +88,6 @@ const EditProfileModal = ({ currentUser, closeModal, onProfileUpdate }) => {
 
     try {
       let photoURL = currentUser.photoURL;
-      // Pakai token juga untuk upload avatar!
       if (selectedFile) {
         const formData = new FormData();
         formData.append('avatar', selectedFile);
@@ -80,7 +112,7 @@ const EditProfileModal = ({ currentUser, closeModal, onProfileUpdate }) => {
       });
 
       setSuccess(true);
-      if (onProfileUpdate) await onProfileUpdate(); // tunggu update profile, biar data up to date
+      if (onProfileUpdate) await onProfileUpdate();
       setTimeout(() => {
         setSuccess(false);
         setError('');
@@ -88,7 +120,7 @@ const EditProfileModal = ({ currentUser, closeModal, onProfileUpdate }) => {
       }, 800);
 
     } catch (err) {
-      setError(err.response?.data?.message || 'Gagal memperbarui profil.');
+      setError(err.response?.data?.message || 'Failed to update profile.');
     } finally {
       setLoading(false);
     }
@@ -98,7 +130,7 @@ const EditProfileModal = ({ currentUser, closeModal, onProfileUpdate }) => {
     <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
       <div className="bg-gray-800 rounded-lg shadow-xl w-full max-w-md">
         <div className="p-4 border-b border-gray-700 flex justify-between items-center">
-          <h2 className="text-lg font-semibold">Edit Profil</h2>
+          <h2 className="text-lg font-semibold">{t.editProfile}</h2>
           <button onClick={closeModal}><X className="h-6 w-6 text-gray-400 hover:text-white" /></button>
         </div>
         <form onSubmit={handleUpdate} className="p-4 space-y-4">
@@ -113,6 +145,7 @@ const EditProfileModal = ({ currentUser, closeModal, onProfileUpdate }) => {
             <div
               className="relative cursor-pointer group"
               onClick={() => fileInputRef.current.click()}
+              title={t.choosePhoto}
             >
               <img
                 src={preview || `https://ui-avatars.com/api/?name=${displayName || currentUser.email}&background=random`}
@@ -126,13 +159,13 @@ const EditProfileModal = ({ currentUser, closeModal, onProfileUpdate }) => {
           </div>
 
           <InputField
-            label="Nama Tampilan"
+            label={t.displayName}
             type="text"
             value={displayName}
             onChange={setDisplayName}
           />
           <div>
-            <label className="block mb-2 text-sm font-medium text-gray-300">Bahasa Pilihan</label>
+            <label className="block mb-2 text-sm font-medium text-gray-300">{t.language}</label>
             <select
               value={languagePreference}
               onChange={e => setLanguagePreference(e.target.value)}
@@ -144,9 +177,8 @@ const EditProfileModal = ({ currentUser, closeModal, onProfileUpdate }) => {
             </select>
           </div>
 
-          {/* Hanya satu pesan yang muncul */}
           {error && !success && <p className="text-sm text-red-400 text-center">{error}</p>}
-          {success && !error && <p className="text-sm text-green-400 text-center">Profil berhasil diperbarui!</p>}
+          {success && !error && <p className="text-sm text-green-400 text-center">{t.profileUpdated}</p>}
 
           <div className="flex justify-end pt-2">
             <button
@@ -154,14 +186,14 @@ const EditProfileModal = ({ currentUser, closeModal, onProfileUpdate }) => {
               onClick={closeModal}
               className="px-4 py-2 mr-2 rounded-md text-gray-300 hover:bg-gray-700"
             >
-              Batal
+              {t.cancel}
             </button>
             <button
               type="submit"
               disabled={loading}
               className="px-4 py-2 bg-indigo-600 rounded-md hover:bg-indigo-700 disabled:bg-indigo-500"
             >
-              {loading ? 'Menyimpan...' : 'Simpan'}
+              {loading ? t.updating : t.save}
             </button>
           </div>
         </form>
