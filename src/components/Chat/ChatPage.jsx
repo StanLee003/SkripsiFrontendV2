@@ -190,7 +190,9 @@ const ChatPage = ({ currentUser, onLogout, onProfileUpdate, navigateToAdmin }) =
               handleSendMessage={handleSendMessage}
             />
           ) : (
-            <WelcomeScreen />
+            <WelcomeScreen 
+              language={userLang}
+            />
           )}
         </div>
       </div>
