@@ -1,15 +1,37 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Smile, Search, Paperclip, Send, LogOut } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Search, Send, Menu } from 'lucide-react';
 
 import UserAvatar from './UserAvatar';
 import MessageBubble from './MessageBubble';
 
-const ChatWindow = ({ chatPartner, messages, currentUser, newMessage, setNewMessage, handleSendMessage }) => {
+// Label multibahasa
+const labels = {
+  en: {
+    online: "Online",
+    searchPlaceholder: "Search this conversation...",
+    typeMessage: "Type a message..."
+  },
+  id: {
+    online: "Online",
+    searchPlaceholder: "Cari di percakapan ini...",
+    typeMessage: "Ketik pesan..."
+  },
+  zh: {
+    online: "在线",
+    searchPlaceholder: "搜索此对话...",
+    typeMessage: "输入消息..."
+  }
+};
+
+const ChatWindow = ({ chatPartner, messages, currentUser, newMessage, setNewMessage, handleSendMessage, setSidebarOpen }) => {
   const messagesEndRef = useRef(null);
   const searchInputRef = useRef(null);
   const [showSearch, setShowSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredMessages, setFilteredMessages] = useState(messages);
+
+  const userLang = currentUser?.profile?.languagePreference || currentUser?.languagePreference || 'en';
+  const lang = labels[userLang] || labels.en;
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -33,15 +55,14 @@ const ChatWindow = ({ chatPartner, messages, currentUser, newMessage, setNewMess
   }, [searchTerm, messages]);
 
   return (
-    <div className="flex-1 flex flex-col bg-gray-900 overflow-hidden relative">
-      {/* HEADER */}
-      <div className="hidden md:flex w-full p-3 border-b border-gray-700 bg-gray-800 items-center flex-shrink-0">
+    <div className="flex-1 min-h-0 flex flex-col bg-gray-900 overflow-hidden relative">
+      {/* HEADER - Desktop */}
+      <div className="hidden md:flex sticky top-0 z-10 w-full p-3 border-b border-gray-700 bg-gray-800 items-center flex-shrink-0">
         <UserAvatar user={chatPartner} size="small" />
         <div className="ml-3">
           <h2 className="text-md font-semibold text-white">{chatPartner.displayName}</h2>
-          <p className="text-xs text-gray-400">Online</p>
+          <p className="text-xs text-gray-400">{lang.online}</p>
         </div>
-        {/* Pakai ml-auto di sini */}
         <button
           className="ml-auto p-2 rounded-full hover:bg-gray-700 transition flex items-center justify-center"
           onClick={() => setShowSearch((s) => !s)}
@@ -51,22 +72,37 @@ const ChatWindow = ({ chatPartner, messages, currentUser, newMessage, setNewMess
         </button>
       </div>
 
+      {/* HEADER - Mobile */}
+      <div className="flex md:hidden sticky top-0 z-10 p-3 bg-gray-800 justify-between items-center shadow-md">
+        <button onClick={() => setSidebarOpen && setSidebarOpen(true)}>
+          <Menu className="h-6 w-6 text-gray-300" />
+        </button>
+        <h2 className="text-lg font-semibold text-white">{chatPartner ? chatPartner.displayName : "Chat"}</h2>
+        <button
+          className="p-2 rounded-full hover:bg-gray-700"
+          onClick={() => setShowSearch((s) => !s)}
+          aria-label="Search Chat"
+        >
+          <Search className="h-5 w-5 text-gray-300" />
+        </button>
+      </div>
+
       {/* SEARCH BAR */}
       {showSearch && (
-        <div className="p-3 bg-gray-900">
+        <div className="p-3 bg-gray-900 sticky top-[3.5rem] z-10">
           <input
             type="text"
             ref={searchInputRef}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Cari di percakapan ini..."
+            placeholder={lang.searchPlaceholder}
             className="w-full px-4 py-2 rounded-md bg-gray-700 text-white focus:ring-2 focus:ring-indigo-500"
           />
         </div>
       )}
 
-      {/* DAFTAR PESAN */}
-      <div className="flex-1 p-4 overflow-y-auto">
+      {/* MESSAGE LIST */}
+      <div className="flex-1 min-h-0 p-4 overflow-y-auto">
         <div className="flex flex-col space-y-2">
           {filteredMessages.map((msg, index) => (
             <MessageBubble
@@ -78,8 +114,9 @@ const ChatWindow = ({ chatPartner, messages, currentUser, newMessage, setNewMess
           <div ref={messagesEndRef} />
         </div>
       </div>
-      {/* FORM INPUT PESAN */}
-      <div className="p-4 bg-gray-800 border-t border-gray-700 flex-shrink-0">
+
+      {/* INPUT */}
+      <div className="p-4 bg-gray-800 border-t border-gray-700 flex-shrink-0 z-10">
         <form
           onSubmit={handleSendMessage}
           className="flex items-center space-x-2"
@@ -88,7 +125,7 @@ const ChatWindow = ({ chatPartner, messages, currentUser, newMessage, setNewMess
             type="text"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Ketik pesan..."
+            placeholder={lang.typeMessage}
             className="flex-1 px-4 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white"
           />
           <button
