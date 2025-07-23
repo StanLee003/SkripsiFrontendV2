@@ -44,6 +44,19 @@ const translations = {
     deleteFail: '删除用户失败。',
     changeAdminFail: '更改管理员状态失败。',
   },
+  ja: {
+    adminPanel: '管理者パネル',
+    backToChat: 'チャットに戻る',
+    loading: 'ユーザーを読み込み中...',
+    user: 'ユーザー',
+    username: 'ユーザー名',
+    admin: '管理者',
+    actions: '操作',
+    delete: '削除',
+    deleteConfirm: 'このユーザーを削除してもよろしいですか？この操作は元に戻せません。',
+    deleteFail: 'ユーザーの削除に失敗しました。',
+    changeAdminFail: '管理者権限の変更に失敗しました。',
+  },
 };
 
 const AdminPage = ({ currentUser, navigateToChat }) => {
