@@ -200,6 +200,7 @@ const ChatPage = ({ currentUser, onLogout, onProfileUpdate, navigateToAdmin }) =
           currentUser={currentUser}
           closeModal={() => setAddContactModalOpen(false)}
           onContactAdded={fetchContacts}
+          language={userLang}
         />
       )}
       {isEditProfileModalOpen && (

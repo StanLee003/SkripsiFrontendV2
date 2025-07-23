@@ -1,14 +1,44 @@
 import React, { useState } from 'react';
 import { X, Search } from 'lucide-react';
-import { axiosWithAuth } from '../../utils/axiosWithAuth'; // Tambahkan import ini!
-import { BACKEND_URL } from '../../backend';                // Pastikan juga ini ada
+import { axiosWithAuth } from '../../utils/axiosWithAuth';
+import { BACKEND_URL } from '../../backend';
 
-const AddContactModal = ({ currentUser, closeModal, onContactAdded }) => {
+// Label multi-bahasa
+const labels = {
+  en: {
+    title: "Add New Contact",
+    placeholder: "Search by username...",
+    added: "Added",
+    add: "Add",
+    errorSearch: "Error while searching.",
+    errorAdd: "Failed to add contact."
+  },
+  id: {
+    title: "Tambah Kontak Baru",
+    placeholder: "Cari dengan username...",
+    added: "Ditambahkan",
+    add: "Tambah",
+    errorSearch: "Error saat mencari.",
+    errorAdd: "Gagal menambah kontak."
+  },
+  zh: {
+    title: "添加新联系人",
+    placeholder: "按用户名搜索...",
+    added: "已添加",
+    add: "添加",
+    errorSearch: "搜索时出错。",
+    errorAdd: "添加联系人失败。"
+  }
+};
+
+const AddContactModal = ({ currentUser, closeModal, onContactAdded, language = 'en' }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [addStatus, setAddStatus] = useState({});
+
+  const lang = labels[language] || labels.en; // fallback ke English jika tidak tersedia
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -24,7 +54,7 @@ const AddContactModal = ({ currentUser, closeModal, onContactAdded }) => {
       setSearchResults(response.data ? [response.data] : []);
     } catch (err) {
       setSearchResults([]);
-      setError(err.response?.data?.message || 'Error saat mencari.');
+      setError(err.response?.data?.message || lang.errorSearch);
     } finally {
       setLoading(false);
     }
@@ -45,7 +75,7 @@ const AddContactModal = ({ currentUser, closeModal, onContactAdded }) => {
       onContactAdded();
     } catch (err) {
       setAddStatus({ ...addStatus, [targetUser.uid]: 'error' });
-      setError(err.response?.data?.message || 'Gagal menambah kontak.');
+      setError(err.response?.data?.message || lang.errorAdd);
     }
   };
 
@@ -53,7 +83,7 @@ const AddContactModal = ({ currentUser, closeModal, onContactAdded }) => {
     <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
       <div className="bg-gray-800 rounded-lg shadow-xl w-full max-w-md">
         <div className="p-4 border-b border-gray-700 flex justify-between items-center">
-          <h2 className="text-lg font-semibold">Tambah Kontak Baru</h2>
+          <h2 className="text-lg font-semibold">{lang.title}</h2>
           <button onClick={closeModal}>
             <X className="h-6 w-6 text-gray-400 hover:text-white" />
           </button>
@@ -64,7 +94,7 @@ const AddContactModal = ({ currentUser, closeModal, onContactAdded }) => {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Cari dengan username..."
+              placeholder={lang.placeholder}
               className="flex-1 px-4 py-2 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             <button
@@ -91,8 +121,8 @@ const AddContactModal = ({ currentUser, closeModal, onContactAdded }) => {
                   {addStatus[user.uid] === 'loading'
                     ? '...'
                     : addStatus[user.uid] === 'success'
-                      ? 'Ditambahkan'
-                      : 'Tambah'}
+                      ? lang.added
+                      : lang.add}
                 </button>
               </div>
             ))}
