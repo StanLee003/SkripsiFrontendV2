@@ -123,7 +123,7 @@ const EditProfileModal = ({ currentUser, closeModal, onProfileUpdate }) => {
       }, 800);
 
     } catch (err) {
-      setError(err.response?.data?.message || '{t.maxPhotoSize}');
+      setError(err.response?.data?.message || t.maxPhotoSize);
     } finally {
       setLoading(false);
     }
