@@ -29,6 +29,15 @@ const AuthPage = () => {
     setLoading(true);
 
     try {
+
+const usernameCheck = await axios.post(`${BACKEND_URL}/api/auth/check-username`, { username });
+    if (usernameCheck.data.exists) {
+      setError("Username already taken. Please choose another.");
+      setLoading(false);
+      return;
+    }
+
+      
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
