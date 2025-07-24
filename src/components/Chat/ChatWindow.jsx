@@ -89,16 +89,30 @@ const ChatWindow = ({ chatPartner, messages, currentUser, newMessage, setNewMess
 
       {/* SEARCH BAR */}
       {showSearch && (
-        <div className="p-3 bg-gray-900 sticky top-[3.5rem] z-10">
-          <input
-            type="text"
-            ref={searchInputRef}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder={lang.searchPlaceholder}
-            className="w-full px-4 py-2 rounded-md bg-gray-700 text-white focus:ring-2 focus:ring-indigo-500"
-          />
-        </div>
+        <>
+          {/* Search bar mobile (top-0) */}
+          <div className="md:hidden p-3 bg-gray-900 sticky top-0 z-20">
+            <input
+              type="text"
+              ref={searchInputRef}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder={lang.searchPlaceholder}
+              className="w-full px-4 py-2 rounded-md bg-gray-700 text-white focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+          {/* Search bar desktop (top-[3.5rem]) */}
+          <div className="hidden md:block p-3 bg-gray-900 sticky top-[3.5rem] z-20">
+            <input
+              type="text"
+              ref={searchInputRef}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder={lang.searchPlaceholder}
+              className="w-full px-4 py-2 rounded-md bg-gray-700 text-white focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+        </>
       )}
 
       {/* MESSAGE LIST */}
