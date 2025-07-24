@@ -16,6 +16,7 @@ const translations = {
     profileUpdated: 'Profile updated successfully!',
     updating: 'Saving...',
     choosePhoto: 'Choose Photo',
+    maxPhotoSize: 'Maximum photo size is 5MB.',
   },
   id: {
     editProfile: 'Edit Profil',
@@ -26,6 +27,7 @@ const translations = {
     profileUpdated: 'Profil berhasil diperbarui!',
     updating: 'Menyimpan...',
     choosePhoto: 'Pilih Foto',
+    maxPhotoSize: 'Ukuran foto maksimum 5MB.',
   },
   zh: {
     editProfile: '编辑资料',
@@ -36,6 +38,7 @@ const translations = {
     profileUpdated: '资料更新成功！',
     updating: '保存中...',
     choosePhoto: '选择照片',
+    maxPhotoSize: '照片最大尺寸为5MB。',
   },
 };
 
@@ -120,7 +123,7 @@ const EditProfileModal = ({ currentUser, closeModal, onProfileUpdate }) => {
       }, 800);
 
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to update profile.');
+      setError(err.response?.data?.message || '{t.maxPhotoSize}');
     } finally {
       setLoading(false);
     }
