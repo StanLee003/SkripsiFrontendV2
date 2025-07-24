@@ -137,26 +137,28 @@ const usernameCheck = await axios.post(`${BACKEND_URL}/api/auth/check-username`,
             {isLoginMode ? 'Register here' : 'Login here'}
           </button>
         </p>
-        {showForgot ? (
-          <>
-            <ForgotPasswordForm language="en" />
-            <button
-              className="text-indigo-400 hover:text-indigo-500 mt-4 block mx-auto"
-              onClick={() => setShowForgot(false)}
-            >
-              Back to Login
-            </button>
-          </>
-        ) : (
-          <p className="text-sm text-center mt-2">
-            <button
-              className="text-indigo-400 hover:text-indigo-500"
-              onClick={() => setShowForgot(true)}
-            >
-              Forgot Password?
-            </button>
-          </p>
-        )}
+        {isLoginMode && (
+  showForgot ? (
+    <>
+      <ForgotPasswordForm language="en" />
+      <button
+        className="text-indigo-400 hover:text-indigo-500 mt-4 block mx-auto"
+        onClick={() => setShowForgot(false)}
+      >
+        Back to Login
+      </button>
+    </>
+  ) : (
+    <p className="text-sm text-center mt-2">
+      <button
+        className="text-indigo-400 hover:text-indigo-500"
+        onClick={() => setShowForgot(true)}
+      >
+        Forgot Password?
+      </button>
+    </p>
+  )
+)}
       </div>
     </div>
   );
