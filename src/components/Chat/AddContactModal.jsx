@@ -12,6 +12,7 @@ const labels = {
     add: "Add",
     errorSearch: "Error while searching.",
     notFound: "User not found.",
+    cannotAddSelf: "You cannot add yourself as a contact.",
     errorAdd: "Failed to add contact."
   },
   id: {
@@ -21,6 +22,7 @@ const labels = {
     add: "Tambah",
     errorSearch: "Error saat mencari.",
     notFound: "Pengguna tidak ditemukan.",
+    cannotAddSelf: "Tidak dapat menambahkan diri sendiri sebagai kontak.",
     errorAdd: "Gagal menambah kontak."
   },
   zh: {
@@ -30,6 +32,7 @@ const labels = {
     add: "添加",
     errorSearch: "搜索时出错。",
     notFound: "未找到用户。",
+    cannotAddSelf: "无法将自己添加为联系人。",
     errorAdd: "添加联系人失败。"
   }
 };
@@ -81,7 +84,16 @@ const AddContactModal = ({ currentUser, closeModal, onContactAdded, language = '
       onContactAdded();
     } catch (err) {
       setAddStatus({ ...addStatus, [targetUser.uid]: 'error' });
-      setError(err.response?.data?.message || lang.errorAdd);
+  
+      const msg = err.response?.data?.message || '';
+      if (
+        msg.toLowerCase().includes('diri sendiri') ||
+        msg.toLowerCase().includes('yourself')
+      ) {
+        setError(lang.cannotAddSelf);
+      } else {
+        setError(msg || lang.errorAdd);
+      }
     }
   };
 
