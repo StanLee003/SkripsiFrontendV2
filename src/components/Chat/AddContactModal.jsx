@@ -11,6 +11,7 @@ const labels = {
     added: "Added",
     add: "Add",
     errorSearch: "Error while searching.",
+    notFound: "User not found.",
     errorAdd: "Failed to add contact."
   },
   id: {
@@ -19,6 +20,7 @@ const labels = {
     added: "Ditambahkan",
     add: "Tambah",
     errorSearch: "Error saat mencari.",
+    notFound: "Pengguna tidak ditemukan.",
     errorAdd: "Gagal menambah kontak."
   },
   zh: {
@@ -27,6 +29,7 @@ const labels = {
     added: "已添加",
     add: "添加",
     errorSearch: "搜索时出错。",
+    notFound: "未找到用户。",
     errorAdd: "添加联系人失败。"
   }
 };
@@ -53,12 +56,13 @@ const AddContactModal = ({ currentUser, closeModal, onContactAdded, language = '
       });
       setSearchResults(response.data ? [response.data] : []);
     } catch (err) {
-      setSearchResults([]);
-      setError(err.response?.data?.message || lang.errorSearch);
-    } finally {
-      setLoading(false);
-    }
-  };
+  setSearchResults([]);
+  if (err.response?.status === 404) {
+    setError(lang.notFound);
+  } else {
+    setError(err.response?.data?.message || lang.errorSearch);
+  }
+};
 
   const handleAddContact = async (targetUser) => {
     setAddStatus({ ...addStatus, [targetUser.uid]: 'loading' });
