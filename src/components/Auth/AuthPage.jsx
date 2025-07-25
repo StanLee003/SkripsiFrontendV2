@@ -108,60 +108,72 @@ const usernameCheck = await axios.post(`${BACKEND_URL}/api/auth/check-username`,
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4 bg-gray-900">
-      <div className="w-full max-w-md p-6 md:p-8 space-y-6 bg-gray-800 rounded-lg shadow-2xl">
-        <h1 className="text-2xl md:text-3xl font-bold text-center text-indigo-400">
-          {isLoginMode ? 'Welcome Back' : 'Create a New Account'}
-        </h1>
-        <p className="text-center text-gray-400 text-sm md:text-base">
-          {isLoginMode ? 'Log in to continue.' : 'Fill in the details to get started.'}
-        </p>
-        <form onSubmit={isLoginMode ? handleLogin : handleRegister} className="space-y-4">
-          {!isLoginMode && (
-            <>
-              <InputField label="Display Name" type="text" value={displayName} onChange={setDisplayName} placeholder="Your Full Name" required />
-              <InputField label="Username" type="text" value={username} onChange={setUsername} placeholder="unique_username" required />
-            </>
+  <div className="flex items-center justify-center min-h-screen p-4 bg-gray-900">
+    <div className="w-full max-w-md p-6 md:p-8 space-y-6 bg-gray-800 rounded-lg shadow-2xl">
+      <h1 className="text-2xl md:text-3xl font-bold text-center text-indigo-400">
+        {isLoginMode ? 'Welcome Back' : 'Create a New Account'}
+      </h1>
+      <p className="text-center text-gray-400 text-sm md:text-base">
+        {isLoginMode ? 'Log in to continue.' : 'Fill in the details to get started.'}
+      </p>
+
+      {/* === MAIN FORM === */}
+      {!showForgot ? (
+        <>
+          <form onSubmit={isLoginMode ? handleLogin : handleRegister} className="space-y-4">
+            {!isLoginMode && (
+              <>
+                <InputField label="Display Name" type="text" value={displayName} onChange={setDisplayName} placeholder="Your Full Name" required />
+                <InputField label="Username" type="text" value={username} onChange={setUsername} placeholder="unique_username" required />
+              </>
+            )}
+            <InputField label="Email" type="email" value={email} onChange={setEmail} placeholder="you@example.com" required />
+            <InputField label="Password" type="password" value={password} onChange={setPassword} placeholder="••••••••" required />
+            {error && <p className="text-sm text-red-400 text-center">{error}</p>}
+            {successMessage && <p className="text-sm text-green-400 text-center">{successMessage}</p>}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full px-4 py-3 text-base font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800 disabled:bg-indigo-500 disabled:cursor-not-allowed transition-all duration-300"
+            >
+              {loading ? 'Processing...' : (isLoginMode ? 'Login' : 'Register')}
+            </button>
+          </form>
+
+          {/* Switch Login/Register */}
+          <p className="text-sm text-center text-gray-400">
+            {isLoginMode ? "Don't have an account?" : "Already have an account?"}
+            <button onClick={toggleMode} className="ml-2 font-semibold text-indigo-400 hover:text-indigo-500 focus:outline-none">
+              {isLoginMode ? 'Register here' : 'Login here'}
+            </button>
+          </p>
+
+          {/* Forgot password link: TAMPIL HANYA di LOGIN */}
+          {isLoginMode && (
+            <p className="text-sm text-center mt-2">
+              <button
+                className="text-indigo-400 hover:text-indigo-500"
+                onClick={() => setShowForgot(true)}
+              >
+                Forgot Password?
+              </button>
+            </p>
           )}
-          <InputField label="Email" type="email" value={email} onChange={setEmail} placeholder="you@example.com" required />
-          <InputField label="Password" type="password" value={password} onChange={setPassword} placeholder="••••••••" required />
-          {error && <p className="text-sm text-red-400 text-center">{error}</p>}
-          {successMessage && <p className="text-sm text-green-400 text-center">{successMessage}</p>}
-          <button type="submit" disabled={loading} className="w-full px-4 py-3 text-base font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800 disabled:bg-indigo-500 disabled:cursor-not-allowed transition-all duration-300">
-            {loading ? 'Processing...' : (isLoginMode ? 'Login' : 'Register')}
+        </>
+      ) : (
+        <>
+          <ForgotPasswordForm language="en" />
+          <button
+            className="text-indigo-400 hover:text-indigo-500 mt-4 block mx-auto"
+            onClick={() => setShowForgot(false)}
+          >
+            Back to Login
           </button>
-        </form>
-        <p className="text-sm text-center text-gray-400">
-          {isLoginMode ? "Don't have an account?" : "Already have an account?"}
-          <button onClick={toggleMode} className="ml-2 font-semibold text-indigo-400 hover:text-indigo-500 focus:outline-none">
-            {isLoginMode ? 'Register here' : 'Login here'}
-          </button>
-        </p>
-        {isLoginMode && (
-  showForgot ? (
-    <>
-      <ForgotPasswordForm language="en" />
-      <button
-        className="text-indigo-400 hover:text-indigo-500 mt-4 block mx-auto"
-        onClick={() => setShowForgot(false)}
-      >
-        Back to Login
-      </button>
-    </>
-  ) : (
-    <p className="text-sm text-center mt-2">
-      <button
-        className="text-indigo-400 hover:text-indigo-500"
-        onClick={() => setShowForgot(true)}
-      >
-        Forgot Password?
-      </button>
-    </p>
-  )
-)}
-      </div>
+        </>
+      )}
     </div>
-  );
+  </div>
+);
 };
 
 export default AuthPage;
