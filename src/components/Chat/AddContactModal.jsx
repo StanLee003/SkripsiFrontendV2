@@ -56,13 +56,15 @@ const AddContactModal = ({ currentUser, closeModal, onContactAdded, language = '
       });
       setSearchResults(response.data ? [response.data] : []);
     } catch (err) {
-  setSearchResults([]);
-  if (err.response?.status === 404) {
-    setError(lang.notFound);
-  } else {
-    setError(err.response?.data?.message || lang.errorSearch);
-  }
-};
+      setSearchResults([]);
+      if (err.response?.status === 404) {
+        setError(lang.notFound);
+      } else {
+        setError(err.response?.data?.message || lang.errorSearch);
+      }
+    }
+    setLoading(false);
+  };
 
   const handleAddContact = async (targetUser) => {
     setAddStatus({ ...addStatus, [targetUser.uid]: 'loading' });
