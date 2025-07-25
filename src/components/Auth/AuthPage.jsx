@@ -111,12 +111,21 @@ const usernameCheck = await axios.post(`${BACKEND_URL}/api/auth/check-username`,
   <div className="flex items-center justify-center min-h-screen p-4 bg-gray-900">
     <div className="w-full max-w-md p-6 md:p-8 space-y-6 bg-gray-800 rounded-lg shadow-2xl">
       <h1 className="text-2xl md:text-3xl font-bold text-center text-indigo-400">
-        {isLoginMode ? 'Welcome Back' : 'Create a New Account'}
+        {showForgot
+          ? "Forgot Password"
+          : isLoginMode
+            ? "Welcome Back"
+            : "Create a New Account"
+        }
       </h1>
       <p className="text-center text-gray-400 text-sm md:text-base">
-        {isLoginMode ? 'Log in to continue.' : 'Fill in the details to get started.'}
+        {showForgot
+          ? "Enter your registered email to receive a password reset link."
+          : isLoginMode
+            ? "Log in to continue."
+            : "Fill in the details to get started."
+        }
       </p>
-
       {/* === MAIN FORM === */}
       {!showForgot ? (
         <>
