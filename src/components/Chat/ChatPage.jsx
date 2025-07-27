@@ -23,8 +23,8 @@ const ChatPage = ({ currentUser, onLogout, onProfileUpdate, navigateToAdmin }) =
   // Pastikan UID dan language selalu diambil dari root user, atau dari .profile jika memang begitu
   const userUid = currentUser?.uid;
   const userLang =
-    currentUser?.languagePreference ||
-    currentUser?.profile?.languagePreference ||
+    currentUser?.systemLanguage ||
+    currentUser?.profile?.systemLanguage ||
     "en";
 
   // UTILITY: Tutup sidebar
