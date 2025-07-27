@@ -65,7 +65,7 @@ const AdminPage = ({ currentUser, navigateToChat }) => {
   const [error, setError] = useState('');
 
   const firebaseUser = currentUser?.firebase || currentUser;
-  const lang = currentUser.profile?.languagePreference || 'en';
+  const lang = currentUser.profile?.systemLanguage || 'en';
   const t = translations[lang] || translations.en;
 
   const fetchUsers = useCallback(async () => {
