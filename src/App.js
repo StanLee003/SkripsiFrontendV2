@@ -18,6 +18,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState('chat');
   const [selectedChat, setSelectedChat] = useState(null);
+  const [systemLanguage, setSystemLanguage] = useState('en');
   const [messages, setMessages] = useState([]);
   const chatContainerRef = useRef(null);
 
@@ -29,14 +30,14 @@ function App() {
       return;
     }
     try {
-      await firebaseUser.reload(); // <-- ini penting untuk emailVerified status!
+      await firebaseUser.reload();
       const profileRes = await axiosWithAuth(firebaseUser, {
         method: 'GET',
         url: `${BACKEND_URL}/api/users/${firebaseUser.uid}/profile`
       });
-      // HANYA TAMBAHKAN property profile, JANGAN override instance-nya
       firebaseUser.profile = profileRes.data;
       firebaseUser.isAdmin = profileRes.data.isAdmin;
+      setSystemLanguage(profileRes.data.systemLanguage || 'en');
       setUser(firebaseUser);
     } catch (error) {
       setUser(firebaseUser);
@@ -150,6 +151,8 @@ function App() {
         chatRef={chatContainerRef}
         onProfileUpdate={handleProfileUpdate}
         navigateToAdmin={() => setCurrentPage('admin')}
+        systemLanguage={systemLanguage}
+        setSystemLanguage={setSystemLanguage}
       />
     );
   };
