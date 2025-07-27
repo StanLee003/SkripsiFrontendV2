@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { X, Camera } from 'lucide-react';
 
 import InputField from '../Auth/InputField';
-import languages from '../../utils/languages';
+import {languages,systemLanguages} from '../../utils/languages';
 import { BACKEND_URL } from '../../backend';
 import { axiosWithAuth } from '../../utils/axiosWithAuth';
 
@@ -193,7 +193,7 @@ const EditProfileModal = ({ currentUser, closeModal, onProfileUpdate }) => {
               onChange={e => setSystemLanguage(e.target.value)}
               className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
-              {languages.map(lang => (
+              {systemLanguages.map(lang => (
                 <option key={lang.code} value={lang.code}>{lang.label}</option>
               ))}
             </select>
