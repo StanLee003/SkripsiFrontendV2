@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { X, Camera } from 'lucide-react';
 
 import InputField from '../Auth/InputField';
-import {languages,systemLanguages} from '../../utils/languages';
+import languages from '../../utils/languages';
+import systemLanguages from '../../utils/languages';
 import { BACKEND_URL } from '../../backend';
 import { axiosWithAuth } from '../../utils/axiosWithAuth';
 
