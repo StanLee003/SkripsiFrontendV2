@@ -10,9 +10,6 @@ import { axiosWithAuth } from './utils/axiosWithAuth';
 import { BACKEND_URL } from './backend';
 import socket from "./utils/socket";
 
-// const socket = io(BACKEND_URL);
-
-
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -126,7 +123,6 @@ function App() {
   // --------- PAGE RENDERING LOGIC -------------
   const renderPage = () => {
     if (!user) return <AuthPage />;
-    // Tahan di halaman verifikasi jika email belum verified!
     if (!user.emailVerified) {
       return (
         <EmailVerificationPage

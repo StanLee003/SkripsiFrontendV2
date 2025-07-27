@@ -1,14 +1,5 @@
 const MessageBubble = ({ message, isSender }) => {
   const originalText = message.originalText || message.text || '';
-  // Misal kamu ingin tampilkan semua bahasa, pakai:
-  // const translations = message.translations || {};
-
-  // Atau jika ingin render satu bahasa (misal Mandarin/zh), bisa manual:
-  // const translatedText = message.translations?.zh;
-
-  // Bisa juga looping semua translations jika mau tampilkan semua terjemahan
-
-  // Format timestamp
   let formattedTime = '';
   try {
     let date;

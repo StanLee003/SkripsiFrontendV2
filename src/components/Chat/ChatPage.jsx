@@ -20,7 +20,6 @@ const ChatPage = ({ currentUser, onLogout, onProfileUpdate, navigateToAdmin }) =
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredContacts, setFilteredContacts] = useState([]);
 
-  // Pastikan UID dan language selalu diambil dari root user, atau dari .profile jika memang begitu
   const userUid = currentUser?.uid;
   const userLang =
     currentUser?.systemLanguage ||

@@ -20,7 +20,6 @@ const EmailVerificationPage = ({ user, onVerified }) => {
           }, 1200);
         }
       } catch (err) {
-        // Optional: handle polling error
       }
     }, 3000);
     return () => clearInterval(interval);

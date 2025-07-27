@@ -4,7 +4,7 @@ import { BACKEND_URL } from "../backend";
 
 const socket = io(BACKEND_URL, {
   autoConnect: true,
-  transports: ["websocket"], // 🚀 Recommended untuk Railway
+  transports: ["websocket"],
 });
 
 export default socket;
