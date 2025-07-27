@@ -1,6 +1,6 @@
 // src/utils/languages.js
 
-const languages = [
+export const languages = [
   // Nasional
   { code: 'id', label: 'Indonesia' },
 
@@ -75,8 +75,7 @@ export const systemLanguages = [
 ];
 
 export function getLanguageLabel(code) {
-  const found = languages.find(lang => lang.code === code);
+  const found = languages.find(lang => lang.code === code) ||
+                systemLanguages.find(lang => lang.code === code);
   return found ? found.label : code;
 }
-
-export default languages;
