@@ -68,6 +68,8 @@ const AdminPage = ({ currentUser, navigateToChat }) => {
   const lang = currentUser.profile?.systemLanguage || 'en';
   const t = translations[lang] || translations.en;
 
+  console.log("systemLanguage di AdminPage:", lang);
+
   const fetchUsers = useCallback(async () => {
     setLoading(true);
     try {
