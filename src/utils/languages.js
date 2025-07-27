@@ -68,6 +68,12 @@ const languages = [
   { code: 'sr', label: 'Serbian' },
 ];
 
+export const systemLanguages = [
+  { code: 'id', label: 'Bahasa Indonesia' },
+  { code: 'en', label: 'English' },
+  { code: 'zh', label: 'Chinese (Mandarin)' },
+];
+
 export function getLanguageLabel(code) {
   const found = languages.find(lang => lang.code === code);
   return found ? found.label : code;
