@@ -49,6 +49,9 @@ const EditProfileModal = ({ currentUser, closeModal, onProfileUpdate }) => {
   const [languagePreference, setLanguagePreference] = useState(
     currentUser.profile?.languagePreference || currentUser.languagePreference || 'en'
   );
+  const [systemLanguage, setSystemLanguage] = useState(
+    currentUser.profile?.systemLanguage || currentUser.systemLanguage || 'en'
+  );
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(currentUser.photoURL || null);
   const [error, setError] = useState('');
@@ -63,6 +66,7 @@ const EditProfileModal = ({ currentUser, closeModal, onProfileUpdate }) => {
     setSuccess(false);
     setDisplayName(currentUser.profile?.displayName || currentUser.displayName || '');
     setLanguagePreference(currentUser.profile?.languagePreference || currentUser.languagePreference || 'en');
+    setSystemLanguage(currentUser.profile?.systemLanguage || currentUser.systemLanguage || 'en');
     setSelectedFile(null);
     setPreview(currentUser.photoURL || null);
   }, [currentUser, closeModal]);
@@ -110,6 +114,7 @@ const EditProfileModal = ({ currentUser, closeModal, onProfileUpdate }) => {
         data: {
           displayName,
           languagePreference,
+          systemLanguage,
           photoURL,
         },
       });
@@ -172,6 +177,20 @@ const EditProfileModal = ({ currentUser, closeModal, onProfileUpdate }) => {
             <select
               value={languagePreference}
               onChange={e => setLanguagePreference(e.target.value)}
+              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              {languages.map(lang => (
+                <option key={lang.code} value={lang.code}>{lang.label}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium text-gray-300">
+              System Language (UI)
+            </label>
+            <select
+              value={systemLanguage}
+              onChange={e => setSystemLanguage(e.target.value)}
               className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               {languages.map(lang => (
