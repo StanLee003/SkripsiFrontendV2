@@ -37,7 +37,7 @@ const ContactList = ({
   const userProfile = currentUser?.profile || currentUser || {};
 
   // Ambil preferensi bahasa user, fallback ke 'en'
-  const userLang = currentUser?.languagePreference || currentUser?.profile?.languagePreference || 'en';
+  const userLang = currentUser?.systemLanguage || currentUser?.profile?.systemLanguage || 'en';
   const lang = labels[userLang] || labels.en;
 
   return (
