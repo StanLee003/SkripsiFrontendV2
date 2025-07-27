@@ -59,7 +59,7 @@ const EditProfileModal = ({ currentUser, closeModal, onProfileUpdate }) => {
   const [success, setSuccess] = useState(false);
   const fileInputRef = useRef(null);
 
-  const t = translations[languagePreference] || translations.en;
+  const t = translations[systemLanguage] || translations.en;
 
   useEffect(() => {
     setError('');
