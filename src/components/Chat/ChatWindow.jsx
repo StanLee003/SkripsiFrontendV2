@@ -30,7 +30,7 @@ const ChatWindow = ({ chatPartner, messages, currentUser, newMessage, setNewMess
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredMessages, setFilteredMessages] = useState(messages);
 
-  const userLang = currentUser?.profile?.languagePreference || currentUser?.languagePreference || 'en';
+  const userLang = currentUser?.profile?.systemLanguage || currentUser?.systemLanguage || 'en';
   const lang = labels[userLang] || labels.en;
 
   useEffect(() => {
